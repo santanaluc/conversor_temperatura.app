@@ -1,0 +1,6 @@
+projectKey=flutterapp-test
+serverUrl=http://localhost:9000
+serverVersion=7.9.6.41879
+dashboardUrl=http://localhost:9000/dashboard?id=flutterapp-test
+ceTaskId=AXgR0_t2Av9gkyl-Yj46
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXgR0_t2Av9gkyl-Yj46
