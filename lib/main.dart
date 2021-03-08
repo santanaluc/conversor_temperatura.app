@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -30,7 +32,7 @@ class Homepage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: new Text('°C - °F / °F - °C'),
+        title: new Text('Conversor de Temperatura'),
         centerTitle: true,
       ),
       body: Conversor(),
@@ -44,21 +46,44 @@ class Conversor extends StatefulWidget {
 }
 
 class _ConversorState extends State<Conversor> {
-  TextEditingController _ctrlCelsius = TextEditingController();
+  TextEditingController _controller = TextEditingController();
   String msg = "Conversor";
   String msgResultF = "Fahrenheit";
   String msgResultC = "Celsius";
 
+  void choice() {}
+
   void calcularF() {
-    double _celsius = double.tryParse(_ctrlCelsius.text);
+    double _celsius = double.tryParse(_controller.text);
     if (_celsius == null) {
       setState(() {
-        msg = "Digite em graus Celsius";
+        Scaffold.of(context).showSnackBar(
+            SnackBar(content: Text("Digite um valor para conversão")));
       });
     } else {
       var fahrenheit = (9 / 5) * _celsius + 32;
       setState(() {
         msg = "Resultado: $fahrenheit °F";
+        Scaffold.of(context).showSnackBar(
+            SnackBar(content: Text("Conversão para Fahrenheit ralizada")));
+        SystemChannels.textInput.invokeListMethod('TextInput.hide');
+      });
+    }
+  }
+
+  void calcularC() {
+    double _fahrenheit = double.tryParse(_controller.text);
+    if (_fahrenheit == null) {
+      setState(() {
+        Scaffold.of(context).showSnackBar(
+            SnackBar(content: Text("Digite um valor para conversão")));
+      });
+    } else {
+      var celsius = ((_fahrenheit - 32) * 5) / 9;
+      setState(() {
+        msg = "Resultado: $celsius °C";
+        Scaffold.of(context).showSnackBar(
+            SnackBar(content: Text("Conversão para Celsius ralizada")));
         SystemChannels.textInput.invokeListMethod('TextInput.hide');
       });
     }
@@ -66,7 +91,7 @@ class _ConversorState extends State<Conversor> {
 
   void novo() {
     setState(() {
-      _ctrlCelsius.text = " ";
+      _controller.text = " ";
       msg = "Conversor";
       SystemChannels.textInput.invokeListMethod('TextInput.hide');
     });
@@ -90,13 +115,14 @@ class _ConversorState extends State<Conversor> {
             textAlign: TextAlign.center,
           ),
           TextField(
-            controller: _ctrlCelsius,
+            controller: _controller,
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(labelText: "Graus Celsius:"),
+            decoration: InputDecoration(
+                labelText: "Digite o grau e escolha a conversão"),
             style: TextStyle(
-                fontSize: 20.0,
+                fontSize: 15.0,
                 color: const Color(0xFF64ffda),
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w300,
                 fontFamily: "Roboto"),
           ),
           Row(
@@ -107,10 +133,12 @@ class _ConversorState extends State<Conversor> {
               RaisedButton(
                 onPressed: () {
                   calcularF();
+                  // Scaffold.of(context).showSnackBar(SnackBar(
+                  //     content: Text("Conversão para Fahrenheit ralizada")));
                 },
                 color: const Color(0xFF212121),
                 child: new Text(
-                  "Calcular",
+                  "°C - °F",
                   style: new TextStyle(
                       fontSize: 20.0,
                       color: const Color(0xFF64ffda),
@@ -131,6 +159,20 @@ class _ConversorState extends State<Conversor> {
                       fontWeight: FontWeight.w500,
                       fontFamily: "Roboto"),
                 ),
+              ),
+              RaisedButton(
+                onPressed: () {
+                  calcularC();
+                },
+                color: const Color(0xFF212121),
+                child: new Text(
+                  "°F - °C",
+                  style: new TextStyle(
+                      fontSize: 20.0,
+                      color: const Color(0xFF64ffda),
+                      fontWeight: FontWeight.w500,
+                      fontFamily: "Roboto"),
+                ),
               )
             ],
           )
@@ -138,4 +180,6 @@ class _ConversorState extends State<Conversor> {
       ),
     );
   }
+
+  SnackBar buildSnackBar() => SnackBar(content: Text('Have a snack!'));
 }
