@@ -65,7 +65,7 @@ class _ConversorState extends State<Conversor> {
       setState(() {
         msg = "Resultado: $fahrenheit °F";
         Scaffold.of(context).showSnackBar(
-            SnackBar(content: Text("Conversão para Fahrenheit ralizada")));
+            SnackBar(content: Text("Conversão para Fahrenheit realizada")));
         SystemChannels.textInput.invokeListMethod('TextInput.hide');
       });
     }
@@ -83,7 +83,7 @@ class _ConversorState extends State<Conversor> {
       setState(() {
         msg = "Resultado: $celsius °C";
         Scaffold.of(context).showSnackBar(
-            SnackBar(content: Text("Conversão para Celsius ralizada")));
+            SnackBar(content: Text("Conversão para Celsius realizada")));
         SystemChannels.textInput.invokeListMethod('TextInput.hide');
       });
     }
